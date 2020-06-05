@@ -56,7 +56,7 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
 
     dropInRequest.collectDeviceData(true);
 
-    if(options.getBoolean("googlePay")){
+    if(options.hasKey("googlePay") && options.getBoolean("googlePlay")){
       GooglePaymentRequest googlePaymentRequest = new GooglePaymentRequest()
         .transactionInfo(TransactionInfo.newBuilder()
           .setTotalPrice(options.getString("orderTotal"))
@@ -82,6 +82,10 @@ public class RNBraintreeDropInModule extends ReactContextBaseJavaModule {
       dropInRequest
       .amount(String.valueOf(threeDSecureOptions.getDouble("amount")))
       .requestThreeDSecureVerification(true);
+    }
+
+    if (options.hasKey("paypal") && !options.getBoolean("paypal")) {
+      dropInRequest.disablePayPal();
     }
 
     mPromise = promise;
